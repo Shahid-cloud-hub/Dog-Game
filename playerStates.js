@@ -3,7 +3,7 @@ const states = {
     RUNNING: 1,
     JUMPING: 2,
     FALLING: 3,
-}
+};
 
 class State {
     constructor(state) {
@@ -18,6 +18,7 @@ export class Sitting extends State {
     }
     enter() {
         this.player.frameY = 5;
+        this.player.speed = 0; // Ensure player stops moving horizontally when sitting
     }
     handleInput(input) {
         if (input.includes('ArrowLeft') || input.includes('ArrowRight')) {
@@ -36,10 +37,8 @@ export class Running extends State {
     }
     handleInput(input) {
         if (input.includes('ArrowDown')) {
-            console.log('input | Running | ArrowDown', input);
             this.player.setState(states.SITTING);
         } else if (input.includes('ArrowUp')) {
-            console.log('input | Running | ArrowUp', input);
             this.player.setState(states.JUMPING);
         }
     }
@@ -55,7 +54,7 @@ export class Jumping extends State {
         this.player.frameY = 1;
     }
     handleInput(input) {
-        if (this.player > this.player.weight) {
+        if (this.player.vy > this.player.weight) {
             this.player.setState(states.FALLING);
         }
     }
